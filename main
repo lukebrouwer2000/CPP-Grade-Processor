@@ -1,0 +1,182 @@
+#include <iostream>
+#include <cstdlib>
+#include <string>
+#include <fstream>
+#include <iomanip>
+#include <vector>
+#include <limits>
+#include <sstream>
+
+
+using namespace std;
+int numStudents = 0;
+
+template <class T>
+T findFinalScore(T studentGradesArray[]){
+    int finalScore;
+    finalScore = ((studentGradesArray[0]*.10)+(studentGradesArray[1]*.10)+(studentGradesArray[2]*.10)+(studentGradesArray[3]*.10)+(studentGradesArray[4]*.20)+(studentGradesArray[5]*.15)+(studentGradesArray[6]*.25));
+    return finalScore;
+}
+
+char getLetterGrade(int studentScore){
+    char letterGrade;
+    if (studentScore >= 90){
+        return 'A';
+    }
+    else if ((studentScore < 89) && (studentScore > 80)){
+        return 'B';
+    }
+    else if ((studentScore < 79) && (studentScore > 70)){
+        return 'C';
+    }
+    else if ((studentScore < 69) && (studentScore > 60)){
+        return 'D';
+    }
+    else {
+        return 'F';
+    }
+
+
+}
+template <class T>
+T findAverage(T studentGradesArray[]){
+    T average = 0;
+    T sum = 0;
+    T sizeArr = sizeof(studentGradesArray) / sizeof(studentGradesArray[0]);
+
+    for (int i = 0; i < sizeArr; i++){
+        sum += studentGradesArray[i];
+
+    }
+    average = sum / sizeArr;
+    return average;
+    //average = sum / 7;
+    //return average;
+}
+template <class T>
+T findMaximum(T studentGradesArray[]){
+    T maximum = studentGradesArray[0];
+    for (int i = 0; i < 7; i++){
+        if (studentGradesArray[i] < studentGradesArray[i+1])
+            maximum = studentGradesArray[i];
+    }
+    return maximum;
+}
+template <class T>
+T findMinimum(T studentGradesArray[]){
+    T minimum = studentGradesArray[0];
+    for (int i = 0; i < 7; i++){
+        if (studentGradesArray[i] > studentGradesArray[i+1])
+            minimum = studentGradesArray[i+1];
+    }
+    return minimum;
+}
+int readFile(){
+    // read from file
+    ifstream myFileRead;
+    string inputFile;
+    string line;
+
+    //cout << "Enter the name of the file that contains student names and test scores.\n";
+    //cin >> inputFile;
+
+    // to find number of lines
+
+
+    int i = 0;
+
+    //Project_CPP_Sample_Input_File.txt
+    myFileRead.open("Project_CPP_Sample_Input_File.txt");
+
+
+    if (myFileRead.is_open()){
+
+
+            // count number of lines of file
+            while (!myFileRead.eof()){
+                getline(myFileRead, line);
+                numStudents++;
+            }
+
+
+            string strStudentDetails = {"Thui Bhu, 100, 90, 80, 100, 89, 99, 88\nAriana B. Smith, 90, 90, 100, 100, 99, 100, 95\nEmily Gonzales, 100, 90, 100, 70, 78, 78, 80\nJennifer L, 80, 90, 90, 100, 89, 99, 85\nMaria Jones, 65, 72, 77, 68, 62, 70, 65\nBill Gates, 60, 54, 38, 62, 65, 60, 50\nEscobar Morris, 83, 77, 88, 76, 79, 72, 76\nAnne Latner, 80, 80, 85, 95, 90, 95, 90"};
+            string studentScoreStr;
+            string studentName;
+            stringstream convert(strStudentDetails); // convert this string to a str
+            int studentScore[numStudents];
+
+            getline(convert, studentName, ',');
+            cout << "Student Information: " << endl;
+            cout << "----------------------------------------------------" << endl;
+            cout << strStudentDetails << endl;
+            cout << "----------------------------------------------------" << endl;
+            for (int i = 0; i < numStudents-1; i++){
+                getline(convert, studentScoreStr, ',');
+                studentScore[i] = stoi(studentScoreStr);
+
+
+
+            }
+
+            getline(convert, studentScoreStr, '\n');
+            studentScore[6] = stoi(studentScoreStr);
+
+
+
+            for (int i = 0; i < numStudents-1; i++){
+            //cout << studentScore[i] << endl;
+
+                cout << "Student " << i+1 << ". " << studentName << ": " << getLetterGrade(findFinalScore(studentScore)) << endl;
+
+
+            }
+
+
+
+
+    myFileRead.close();
+    }
+    else {
+        cout << "Unable to open file." << endl;
+        return -1;
+    }
+    cout << "\n";
+
+
+    return 0;
+}
+
+int writeFile(){
+
+
+    ofstream myFileWrite;
+    string outputFile;
+    cout << "Enter the name of the file you wish to open.\n";
+    cin >> outputFile;
+
+    int i = 1;
+    myFileWrite.open (outputFile);
+    if (myFileWrite.is_open()){
+        myFileWrite << "Student" << setw(9) << "Average" << endl;
+        for (i = 0; i < numStudents+1; i++){
+            //myFileWrite << name << endl;
+
+
+        }
+
+
+        myFileWrite.close();
+    }
+    else {
+        cout << "Unable to open file." << endl;
+    }
+}
+int main(void)
+{
+    
+    readFile();
+    //writeFile();
+
+
+
+}
